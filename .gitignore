@@ -8,3 +8,5 @@ Logs
 
 # CSharp
 *.sln
+*.csproj
+*AssemblyReference.cache

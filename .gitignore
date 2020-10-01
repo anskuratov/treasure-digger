@@ -1,0 +1,10 @@
+# Rider, Jet Brains
+.idea*
+
+# Unity
+Library
+Temp
+Logs
+
+# CSharp
+*.sln

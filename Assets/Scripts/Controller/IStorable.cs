@@ -1,4 +1,4 @@
-﻿namespace Model
+﻿namespace Controller
 {
 	public interface IStorable
 	{

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Controller.Commands.Core
+namespace Commands.Core
 {
 	public class CommandPool : ICommandPool
 	{

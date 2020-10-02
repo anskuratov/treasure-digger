@@ -1,29 +1,28 @@
-﻿using UnityEngine;
+﻿using Model.Messages;
 
 namespace Model
 {
-	public class GoldModel : IStorable
+	public class GoldModel : MessageDispatcher
 	{
-		private readonly int _goalAmount;
-		
-		private int _actualAmount;
+		public string StoreKey => "Gold";
+		public int GoalAmount { get; }
 
-		private string StoreKey => "Gold"; 
+		public int Amount
+		{
+			get => _amount;
+			set
+			{
+				_amount = value;
+				Dispatch(new GoldChanged(_amount));
+			}
+		}
+
+		private int _amount;
 
 		public GoldModel(int goalAmount)
 		{
-			_goalAmount = goalAmount;
-			_actualAmount = 0;
-		}
-
-		public void Save()
-		{
-			PlayerPrefs.SetInt(StoreKey, _actualAmount);
-		}
-
-		public void Load()
-		{
-			_actualAmount = PlayerPrefs.GetInt(StoreKey);
+			GoalAmount = goalAmount;
+			_amount = 0;
 		}
 	}
 }

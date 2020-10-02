@@ -1,7 +1,8 @@
-﻿namespace Controller.Commands.Core
+﻿namespace Commands.Core
 {
 	public interface ICommand
 	{
 		void Execute();
+		void PostExecute();
 	}
 }

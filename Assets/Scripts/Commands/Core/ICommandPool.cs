@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Controller.Commands.Core
+namespace Commands.Core
 {
 	public interface ICommandPool
 	{

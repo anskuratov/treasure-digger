@@ -1,4 +1,4 @@
-﻿namespace Controller.Commands.Core
+﻿namespace Commands.Core
 {
 	public interface IPerformer
 	{

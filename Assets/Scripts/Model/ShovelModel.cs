@@ -1,26 +1,26 @@
-﻿using UnityEngine;
+﻿using Model.Messages;
 
 namespace Model
 {
-	public class ShovelModel : IStorable
+	public class ShovelModel : MessageDispatcher
 	{
-		private int _amount;
+		public string StoreKey => "Shovel";
 
-		private string StoreKey => "Shovel";
+		public int Amount
+		{
+			get => _amount;
+			set
+			{
+				_amount = value;
+				Dispatch(new ShovelChanged(_amount));
+			}
+		}
+
+		private int _amount;
 
 		public ShovelModel(int amount)
 		{
 			_amount = amount;
-		}
-
-		public void Save()
-		{
-			PlayerPrefs.SetInt(StoreKey, _amount);
-		}
-
-		public void Load()
-		{
-			_amount = PlayerPrefs.GetInt(StoreKey);
 		}
 	}
 }

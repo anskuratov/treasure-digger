@@ -1,31 +1,27 @@
-﻿using UnityEngine;
+﻿using Model.Messages;
 
 namespace Model
 {
-	public class CellModel : IStorable
+	public class CellModel : MessageDispatcher
 	{
-		private readonly int _depth;
-		private readonly (int, int) _address;
+		public int Depth { get; }
+
+		public int Level
+		{
+			get => _level;
+			set
+			{
+				_level = value;
+				Dispatch(new CellChanged(_level));
+			}
+		}
 
 		private int _level;
 
-		private string StoreKey => $"Cell{_address.Item1}:{_address.Item2}";
-
-		public CellModel(int depth, (int, int) address)
+		public CellModel(int depth)
 		{
-			_depth = depth;
-			_address = address;
+			Depth = depth;
 			_level = 0;
-		}
-
-		public void Save()
-		{
-			PlayerPrefs.SetInt(StoreKey, _level);
-		}
-
-		public void Load()
-		{
-			_level = PlayerPrefs.GetInt(StoreKey);
 		}
 	}
 }

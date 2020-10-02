@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Controller.Commands.Core
+namespace Commands.Core
 {
 	public class PerformerFactory
 	{
@@ -20,6 +20,7 @@ namespace Controller.Commands.Core
 				if (commandObject is ICommand command)
 				{
 					command.Execute();
+					command.PostExecute();
 				}
 			}
 		}

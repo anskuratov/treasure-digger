@@ -30,7 +30,17 @@
 		}
 	}
 
-	public readonly struct GoldBarChanged
+	public readonly struct GoldBarCollected
+	{
+		public readonly GoldBarModel GoldBarModel;
+
+		public GoldBarCollected(GoldBarModel goldBarModel)
+		{
+			GoldBarModel = goldBarModel;
+		}
+	}
+
+	public readonly struct GoldBarFound
 	{
 	}
 }

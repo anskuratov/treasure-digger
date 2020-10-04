@@ -15,6 +15,7 @@ public class MainComposition : MonoBehaviour
 	private ShovelController _shovelController;
 	private GoldWalletController _goldWalletController;
 	private readonly Dictionary<int, CellController> _cellControllers = new Dictionary<int, CellController>();
+	private GoldBarsSpawnerController _goldBarsSpawnerController;
 
 	private IPerformer _performer;
 
@@ -41,6 +42,9 @@ public class MainComposition : MonoBehaviour
 			var cell = new CellModel(CellDepth);
 			_cellControllers.Add(i, new CellController(cell, i));
 		}
+
+		var goldBarsSpawnerModel = new GoldBarsSpawnerModel();
+		_goldBarsSpawnerController = new GoldBarsSpawnerController(goldBarsSpawnerModel);
 	}
 
 	private void BindingCommands()
@@ -50,6 +54,7 @@ public class MainComposition : MonoBehaviour
 		ICommandPool commandPool = new CommandPool();
 		commandPool.Register<Dig>(new DigCommand(_shovelController, storageManager));
 		commandPool.Register<CollectGold>(new CollectGoldCommand(_goldWalletController, storageManager));
+		commandPool.Register<SpawnGoldBar>(new SpawnGoldBarCommand(_goldBarsSpawnerController, storageManager));
 
 		var performerFactory = new PerformerFactory();
 		_performer = performerFactory.Create(commandPool);

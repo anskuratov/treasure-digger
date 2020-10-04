@@ -8,31 +8,31 @@ namespace Controller
 	{
 		private const string StoreKey = "GoldWallet";
 
-		private readonly GoldWalletModel _goldWallet;
+		private readonly GoldWalletModel _model;
 
-		public IListenable Listenable => _goldWallet;
+		public IListenable Listenable => _model;
 
-		public GoldWalletController(GoldWalletModel goldWallet)
+		public GoldWalletController(GoldWalletModel model)
 		{
-			_goldWallet = goldWallet;
+			_model = model;
 		}
 
-		public int GoldAmount => _goldWallet.Amount;
-		public int GoldGoalAmount => _goldWallet.GoalAmount;
+		public int GoldAmount => _model.Amount;
+		public int GoldGoalAmount => _model.GoalAmount;
 
 		public void CollectGold()
 		{
-			_goldWallet.Amount += 1;
+			_model.Amount += 1;
 		}
 
 		public void Save()
 		{
-			PlayerPrefs.SetInt(StoreKey, _goldWallet.Amount);
+			PlayerPrefs.SetInt(StoreKey, _model.Amount);
 		}
 
 		public void Load()
 		{
-			_goldWallet.Amount = PlayerPrefs.GetInt(StoreKey);
+			_model.Amount = PlayerPrefs.GetInt(StoreKey);
 		}
 	}
 }

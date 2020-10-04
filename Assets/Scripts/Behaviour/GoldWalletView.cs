@@ -25,25 +25,25 @@ namespace Behaviour
 		[SerializeField]
 		private Text _goalCount;
 
-		private GoldWalletController _walletController;
+		private GoldWalletController _controller;
 
 		protected override void Refresh()
 		{
-			_count.text = _walletController.GoldAmount.ToString();
+			_count.text = _controller.GoldAmount.ToString();
 		}
 
 		public override void Initialize(Data data)
 		{
-			_walletController = data.GoldWalletController;
+			_controller = data.GoldWalletController;
 			SubscribeToModel();
 
-			_goalCount.text = _walletController.GoldGoalAmount.ToString();
+			_goalCount.text = _controller.GoldGoalAmount.ToString();
 			Refresh();
 		}
 
 		private void SubscribeToModel()
 		{
-			_walletController.Listenable.AddListener(this);
+			_controller.Listenable.AddListener(this);
 		}
 
 		public void OnMessage(GoldChanged message)

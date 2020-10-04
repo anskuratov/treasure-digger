@@ -4,8 +4,6 @@ namespace Model
 {
 	public class ShovelModel : MessageDispatcher
 	{
-		public string StoreKey => "Shovel";
-
 		public int Amount
 		{
 			get => _amount;

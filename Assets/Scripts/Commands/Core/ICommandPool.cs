@@ -1,14 +1,11 @@
-﻿using System;
-
-namespace Commands.Core
+﻿namespace Commands.Core
 {
 	public interface ICommandPool
 	{
-		void Register<TData, TCommand>()
-			where TData : struct
-			where TCommand : ICommand;
+		void Register<TData>(ICommand command)
+			where TData : struct;
 
-		Type GetCommand<TData>()
+		ICommand GetCommand<TData>()
 			where TData : struct;
 	}
 }

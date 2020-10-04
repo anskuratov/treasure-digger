@@ -1,28 +1,33 @@
 ﻿using Commands.Core;
 using Controller;
-using Model;
 
 namespace Commands
 {
-	public abstract class SaveCommand<T> : Command<T>, ICommand
+	public abstract class SaveCommand<T> : Command<T>
 		where T : struct
 	{
 		private readonly StorageManager _storageManager;
-		private readonly IStorable _storable;
+		private readonly IStorable[] _storables;
 
-		protected SaveCommand(T data, StorageManager storageManager, IStorable storable) : base(data)
+		protected SaveCommand(StorageManager storageManager, params IStorable[] storables)
 		{
 			_storageManager = storageManager;
-			_storable = storable;
+			_storables = storables;
 		}
 
-		public virtual void Execute()
+		public override void Execute()
 		{
 		}
 
-		public virtual void PostExecute()
+		public override void PostExecute()
 		{
-			_storageManager.Save(_storable);
+			if (_storables != null)
+			{
+				foreach (IStorable storable in _storables)
+				{
+					_storageManager.Save(storable);
+				}
+			}
 		}
 	}
 }

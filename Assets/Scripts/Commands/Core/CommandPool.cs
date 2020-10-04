@@ -5,26 +5,25 @@ namespace Commands.Core
 {
 	public class CommandPool : ICommandPool
 	{
-		private readonly Dictionary<Type, Type> _commands;
+		private readonly Dictionary<Type, ICommand> _commands;
 
 		public CommandPool()
 		{
-			_commands = new Dictionary<Type, Type>();
+			_commands = new Dictionary<Type, ICommand>();
 		}
 
-		public void Register<TData, TCommand>()
+		public void Register<TData>(ICommand command)
 			where TData : struct
-			where TCommand : ICommand
 		{
 			if (_commands.ContainsKey(typeof(TData)))
 			{
 				throw new ArgumentException("Command is already existed");
 			}
 
-			_commands.Add(typeof(TData), typeof(TCommand));
+			_commands.Add(typeof(TData), command);
 		}
 
-		public Type GetCommand<TData>()
+		public ICommand GetCommand<TData>()
 			where TData : struct
 		{
 			if (_commands.ContainsKey(typeof(TData)) == false)
@@ -32,8 +31,8 @@ namespace Commands.Core
 				throw new ArgumentException("Unknown command");
 			}
 
-			Type commandType = _commands[typeof(TData)];
-			return commandType;
+			ICommand command = _commands[typeof(TData)];
+			return command;
 		}
 	}
 }

@@ -19,6 +19,9 @@ namespace Controller
 			_storeIndex = storeIndex;
 		}
 
+		public int CellLevel => _cell.Level;
+		public int CellDepth => _cell.Depth;
+
 		public void Save()
 		{
 			PlayerPrefs.SetInt(StoreKey, _cell.Level);

@@ -2,13 +2,25 @@
 
 namespace Commands
 {
-	public struct Dig
+	public readonly struct LoadGame
 	{
-		public readonly ShovelController ShovelController;
+	}
 
-		public Dig(ShovelController shovelController)
+	public readonly struct Dig
+	{
+		public readonly CellController CellController;
+
+		public Dig(CellController cellController)
 		{
-			ShovelController = shovelController;
+			CellController = cellController;
 		}
+	}
+
+	public readonly struct CollectGold
+	{
+	}
+
+	public readonly struct SpawnGoldBar
+	{
 	}
 }

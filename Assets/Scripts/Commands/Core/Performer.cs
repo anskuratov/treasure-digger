@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Commands.Core
+﻿namespace Commands.Core
 {
 	public class PerformerFactory
 	{
@@ -15,13 +13,11 @@ namespace Commands.Core
 
 			public void Invoke<T>(T commandData) where T : struct
 			{
-				Type commandType = _commandPool.GetCommand<T>();
-				object commandObject = Activator.CreateInstance(commandType, commandData);
-				if (commandObject is ICommand command)
-				{
-					command.Execute();
-					command.PostExecute();
-				}
+				ICommand command = _commandPool.GetCommand<T>();
+				(command as Command<T>)?.Initialize(commandData);
+
+				command.Execute();
+				command.PostExecute();
 			}
 		}
 

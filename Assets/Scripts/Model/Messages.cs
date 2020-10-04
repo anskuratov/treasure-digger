@@ -29,4 +29,8 @@
 			Level = level;
 		}
 	}
+
+	public readonly struct GoldBarChanged
+	{
+	}
 }

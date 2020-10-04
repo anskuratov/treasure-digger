@@ -2,9 +2,8 @@
 
 namespace Model
 {
-	public class GoldModel : MessageDispatcher
+	public class GoldWalletModel : MessageDispatcher
 	{
-		public string StoreKey => "Gold";
 		public int GoalAmount { get; }
 
 		public int Amount
@@ -19,7 +18,7 @@ namespace Model
 
 		private int _amount;
 
-		public GoldModel(int goalAmount)
+		public GoldWalletModel(int goalAmount)
 		{
 			GoalAmount = goalAmount;
 			_amount = 0;

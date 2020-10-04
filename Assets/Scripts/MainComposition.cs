@@ -13,8 +13,10 @@ public class MainComposition : MonoBehaviour
 	private const int CellDepth = 4;
 
 	private ShovelController _shovelController;
-	private GoldController _goldController;
+	private GoldWalletController _goldWalletController;
 	private readonly Dictionary<int, CellController> _cellControllers = new Dictionary<int, CellController>();
+
+	private IPerformer _performer;
 
 	private void Awake()
 	{
@@ -31,8 +33,8 @@ public class MainComposition : MonoBehaviour
 		var shovel = new ShovelModel(ShovelsAmount);
 		_shovelController = new ShovelController(shovel);
 
-		var gold = new GoldModel(GoldGoal);
-		_goldController = new GoldController(gold);
+		var gold = new GoldWalletModel(GoldGoal);
+		_goldWalletController = new GoldWalletController(gold);
 
 		for (int i = 0; i < FieldSize * FieldSize; ++i)
 		{
@@ -43,7 +45,13 @@ public class MainComposition : MonoBehaviour
 
 	private void BindingCommands()
 	{
+		var storageManager = new StorageManager();
+
 		ICommandPool commandPool = new CommandPool();
-		commandPool.Register<Dig, DigCommand>();
+		commandPool.Register<Dig>(new DigCommand(_shovelController, storageManager));
+		commandPool.Register<CollectGold>(new CollectGoldCommand(_goldWalletController, storageManager));
+
+		var performerFactory = new PerformerFactory();
+		_performer = performerFactory.Create(commandPool);
 	}
 }

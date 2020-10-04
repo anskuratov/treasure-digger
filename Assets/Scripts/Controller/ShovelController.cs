@@ -8,7 +8,7 @@ namespace Controller
 	public class ShovelController : IStorable
 	{
 		private const string StoreKey = "Shovel";
-		
+
 		public IListenable Listenable => _shovel;
 
 		private readonly ShovelModel _shovel;
@@ -18,7 +18,7 @@ namespace Controller
 			_shovel = shovel;
 		}
 
-		public int ShovelAmount => _shovel.Amount; 
+		public int ShovelAmount => _shovel.Amount;
 
 		public void UseShovel()
 		{
@@ -37,7 +37,10 @@ namespace Controller
 
 		public void Load()
 		{
-			_shovel.Amount = PlayerPrefs.GetInt(StoreKey);
+			if (PlayerPrefs.HasKey(StoreKey))
+			{
+				_shovel.Amount = PlayerPrefs.GetInt(StoreKey);
+			}
 		}
 	}
 }

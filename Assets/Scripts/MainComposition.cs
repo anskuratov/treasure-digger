@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using Commands;
 using Commands.Core;
-using Model;
 using Controller;
+using Model;
 using UnityEngine;
 
 public class MainComposition : MonoBehaviour
@@ -21,15 +21,16 @@ public class MainComposition : MonoBehaviour
 
 	private void Awake()
 	{
-		InitializeModelAndControllers();
+		InitializeModelsAndControllers();
 		BindingCommands();
 	}
 
 	private void Start()
 	{
+		_performer.Invoke(new LoadGame());
 	}
 
-	private void InitializeModelAndControllers()
+	private void InitializeModelsAndControllers()
 	{
 		var shovel = new ShovelModel(ShovelsAmount);
 		_shovelController = new ShovelController(shovel);
@@ -52,6 +53,8 @@ public class MainComposition : MonoBehaviour
 		var storageManager = new StorageManager();
 
 		ICommandPool commandPool = new CommandPool();
+		commandPool.Register<LoadGame>(new LoadGameCommand(_shovelController, _goldWalletController, _cellControllers,
+			_goldBarsSpawnerController));
 		commandPool.Register<Dig>(new DigCommand(_shovelController, storageManager));
 		commandPool.Register<CollectGold>(new CollectGoldCommand(_goldWalletController, storageManager));
 		commandPool.Register<SpawnGoldBar>(new SpawnGoldBarCommand(_goldBarsSpawnerController, storageManager));

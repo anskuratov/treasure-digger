@@ -29,11 +29,14 @@ namespace Controller
 
 		public void Load()
 		{
-			var goldBarsCount = PlayerPrefs.GetInt(StoreKey);
-			for (int i = 0; i < goldBarsCount; ++i)
+			if (PlayerPrefs.HasKey(StoreKey))
 			{
-				var goldBarModel = new GoldBarModel();
-				_model.AddGoldBar(goldBarModel);
+				var goldBarsCount = PlayerPrefs.GetInt(StoreKey);
+				for (int i = 0; i < goldBarsCount; ++i)
+				{
+					var goldBarModel = new GoldBarModel();
+					_model.AddGoldBar(goldBarModel);
+				}
 			}
 		}
 	}

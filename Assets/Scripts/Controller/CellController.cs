@@ -7,7 +7,7 @@ namespace Controller
 	public class CellController : IStorable
 	{
 		private string StoreKey => $"Cell{_storeIndex.ToString()}";
-		
+
 		public IListenable Listenable => _cell;
 
 		private readonly CellModel _cell;
@@ -29,7 +29,10 @@ namespace Controller
 
 		public void Load()
 		{
-			_cell.Level = PlayerPrefs.GetInt(StoreKey);
+			if (PlayerPrefs.HasKey(StoreKey))
+			{
+				_cell.Level = PlayerPrefs.GetInt(StoreKey);
+			}
 		}
 	}
 }

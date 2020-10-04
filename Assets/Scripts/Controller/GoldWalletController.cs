@@ -32,7 +32,10 @@ namespace Controller
 
 		public void Load()
 		{
-			_model.Amount = PlayerPrefs.GetInt(StoreKey);
+			if (PlayerPrefs.HasKey(StoreKey))
+			{
+				_model.Amount = PlayerPrefs.GetInt(StoreKey);
+			}
 		}
 	}
 }

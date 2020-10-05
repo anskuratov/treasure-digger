@@ -6,7 +6,10 @@ namespace Behaviour
 		IInitializable<TData>
 		where TData : struct
 	{
-		protected abstract void Refresh();
+		protected virtual void Refresh()
+		{
+		}
+
 		public abstract void Initialize(TData data);
 	}
 }

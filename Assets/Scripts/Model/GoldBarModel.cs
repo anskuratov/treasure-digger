@@ -4,8 +4,6 @@ namespace Model
 {
 	public class GoldBarModel : MessageDispatcher
 	{
-		private bool _isCollected;
-
 		public bool IsCollected
 		{
 			get => _isCollected;
@@ -19,9 +17,18 @@ namespace Model
 			}
 		}
 
-		public GoldBarModel()
+		public readonly int PositionIndex;
+
+		private bool _isCollected;
+
+		public GoldBarModel(int positionIndex)
 		{
+			PositionIndex = positionIndex;
 			_isCollected = false;
+		}
+
+		public GoldBarModel(GoldBarModel model) : this(model.PositionIndex)
+		{
 		}
 	}
 }

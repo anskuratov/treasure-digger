@@ -15,14 +15,21 @@ namespace Behaviour
 		public readonly struct Data
 		{
 			public readonly GoldBarsSpawnerController GoldBarsSpawnerController;
+			public readonly int FieldSize;
+			public readonly Vector2 ElementSize;
 
-			public Data(GoldBarsSpawnerController goldBarsSpawnerController)
+			public Data(GoldBarsSpawnerController goldBarsSpawnerController,
+			int fieldSize,
+			Vector2 elementSize)
 			{
 				GoldBarsSpawnerController = goldBarsSpawnerController;
+				FieldSize = fieldSize;
+				ElementSize = elementSize;
 			}
 		}
 
 		private GoldBarsSpawnerController _controller;
+		private FieldGrid _fieldGrid;
 
 		private readonly List<GoldBarView> _goldBarsPool = new List<GoldBarView>();
 		private readonly Dictionary<GoldBarModel, GoldBarView> _goldBars = new Dictionary<GoldBarModel, GoldBarView>();
@@ -35,6 +42,7 @@ namespace Behaviour
 		{
 			_controller = data.GoldBarsSpawnerController;
 			SubscribeToModel();
+			_fieldGrid = new FieldGrid(data.FieldSize, data.ElementSize);
 
 			SpawnGoldBars();
 
@@ -63,22 +71,20 @@ namespace Behaviour
 			{
 				goldBarView = _goldBarsPool.First();
 				_goldBarsPool.Remove(goldBarView);
-
-				goldBarView.Initialize(new GoldBarView.Data(goldBarController));
-				goldBarView.gameObject.SetActive(true);
-				_goldBars.Add(goldBarModel, goldBarView);
-
-				return;
+			}
+			else
+			{
+				goldBarView = Instantiate(Resources.Load<GoldBarView>(PrefabPath.GoldBarView), transform);
 			}
 
-			goldBarView = Instantiate(Resources.Load<GoldBarView>(PrefabPath.GoldBarView), transform);
 			goldBarView.Initialize(new GoldBarView.Data(goldBarController));
+			goldBarView.gameObject.SetActive(true);
 			_goldBars.Add(goldBarModel, goldBarView);
 		}
 
 		public void OnMessage(GoldBarFound message)
 		{
-			CreateGoldBarView(new GoldBarModel());
+			CreateGoldBarView(new GoldBarModel(message.GoldBar));
 		}
 
 		public void OnMessage(GoldBarCollected message)

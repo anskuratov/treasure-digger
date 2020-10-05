@@ -22,7 +22,7 @@ namespace Model
 			}
 
 			_goldBars.Add(goldBar);
-			Dispatch(new GoldBarFound());
+			Dispatch(new GoldBarFound(goldBar));
 		}
 
 		public void RemoveGoldBar(GoldBarModel goldBar)

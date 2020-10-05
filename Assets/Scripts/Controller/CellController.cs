@@ -6,21 +6,20 @@ namespace Controller
 {
 	public class CellController : IStorable
 	{
-		private string StoreKey => $"Cell{_storeIndex.ToString()}";
+		private string StoreKey => $"Cell{_cell.PositionIndex.ToString()}";
 
 		public IListenable Listenable => _cell;
 
 		private readonly CellModel _cell;
-		private readonly int _storeIndex;
 
-		public CellController(CellModel cell, int storeIndex)
+		public CellController(CellModel cell)
 		{
 			_cell = cell;
-			_storeIndex = storeIndex;
 		}
 
 		public int CellLevel => _cell.Level;
 		public int CellDepth => _cell.Depth;
+		public int PositionIndex => _cell.PositionIndex;
 
 		public void UpLevel()
 		{

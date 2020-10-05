@@ -8,6 +8,7 @@ namespace Controller
 	public class GoldBarsSpawnerController : IStorable
 	{
 		private const string StoreKey = "GoldBarsSpawner";
+		private const string GoldBarStoreKeyPrefix = "GoldBar";
 
 		private readonly GoldBarsSpawnerModel _model;
 
@@ -19,12 +20,16 @@ namespace Controller
 			_model = model;
 		}
  
-		public void AddGoldBar() => _model.AddGoldBar(new GoldBarModel());
+		public void AddGoldBar(int positionIndex) => _model.AddGoldBar(new GoldBarModel(positionIndex));
 		public void RemoveGoldBar(GoldBarModel goldBar) => _model.RemoveGoldBar(goldBar);
 
 		public void Save()
 		{
 			PlayerPrefs.SetInt(StoreKey, _model.GoldBars.Count);
+			for (int i = 0; i < _model.GoldBars.Count; ++i)
+			{
+				PlayerPrefs.SetInt($"{GoldBarStoreKeyPrefix}{i.ToString()}", _model.GoldBars[i].PositionIndex);
+			}
 		}
 
 		public void Load()
@@ -34,7 +39,8 @@ namespace Controller
 				var goldBarsCount = PlayerPrefs.GetInt(StoreKey);
 				for (int i = 0; i < goldBarsCount; ++i)
 				{
-					var goldBarModel = new GoldBarModel();
+					var positionIndex = PlayerPrefs.GetInt($"{GoldBarStoreKeyPrefix}{i.ToString()}");
+					var goldBarModel = new GoldBarModel(positionIndex);
 					_model.AddGoldBar(goldBarModel);
 				}
 			}

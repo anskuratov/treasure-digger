@@ -42,5 +42,11 @@
 
 	public readonly struct GoldBarFound
 	{
+		public readonly GoldBarModel GoldBar;
+
+		public GoldBarFound(GoldBarModel goldBar)
+		{
+			GoldBar = goldBar;
+		}
 	}
 }

@@ -22,5 +22,11 @@ namespace Commands
 
 	public readonly struct SpawnGoldBar
 	{
+		public readonly int PositionIndex;
+
+		public SpawnGoldBar(int positionIndex)
+		{
+			PositionIndex = positionIndex;
+		}
 	}
 }

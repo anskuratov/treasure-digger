@@ -15,7 +15,7 @@ namespace Commands
 		public override void Execute()
 		{
 			base.Execute();
-			_goldBarsSpawnerController.AddGoldBar();
+			_goldBarsSpawnerController.AddGoldBar(_data.PositionIndex);
 		}
 	}
 }

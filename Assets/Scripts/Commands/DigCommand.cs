@@ -1,15 +1,18 @@
-﻿using Controller;
+﻿using Commands.Core;
+using Controller;
 
 namespace Commands
 {
 	public class DigCommand : SaveCommand<Dig>
 	{
+		private readonly IPerformer _performer;
 		private readonly ShovelController _shovelController;
 		private readonly StorageManager _storageManager;
 
-		public DigCommand(ShovelController shovelController, StorageManager storageManager) : base(storageManager,
+		public DigCommand(IPerformer performer, ShovelController shovelController, StorageManager storageManager) : base(storageManager,
 			shovelController)
 		{
+			_performer = performer;
 			_shovelController = shovelController;
 			_storageManager = storageManager;
 		}
@@ -27,6 +30,8 @@ namespace Commands
 			base.Execute();
 			_shovelController.UseShovel();
 			_data.CellController.UpLevel();
+
+			_performer.Invoke(new SpawnGoldBar(_data.CellController.PositionIndex));
 		}
 
 		public override void PostExecute()

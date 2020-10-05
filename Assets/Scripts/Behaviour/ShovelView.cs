@@ -22,9 +22,6 @@ namespace Behaviour
 		[SerializeField]
 		private Text _amount;
 
-		[SerializeField]
-		private Text _initialAmount;
-
 		private ShovelController _controller;
 
 		protected override void Refresh()
@@ -37,7 +34,6 @@ namespace Behaviour
 			_controller = data.ShovelController;
 			SubscribeToModel();
 
-			_initialAmount.text = _controller.ShovelAmount.ToString();
 			Refresh();
 		}
 

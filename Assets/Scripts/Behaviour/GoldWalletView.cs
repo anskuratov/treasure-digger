@@ -20,16 +20,16 @@ namespace Behaviour
 		}
 
 		[SerializeField]
-		private Text _count;
+		private Text _amount;
 
 		[SerializeField]
-		private Text _goalCount;
+		private Text _goalAmount;
 
 		private GoldWalletController _controller;
 
 		protected override void Refresh()
 		{
-			_count.text = _controller.GoldAmount.ToString();
+			_amount.text = _controller.GoldAmount.ToString();
 		}
 
 		public override void Initialize(Data data)
@@ -37,7 +37,7 @@ namespace Behaviour
 			_controller = data.GoldWalletController;
 			SubscribeToModel();
 
-			_goalCount.text = _controller.GoldGoalAmount.ToString();
+			_goalAmount.text = _controller.GoldGoalAmount.ToString();
 			Refresh();
 		}
 

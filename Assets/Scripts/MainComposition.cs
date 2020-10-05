@@ -13,7 +13,7 @@ public class MainComposition : MonoBehaviour
 	private const int GoldGoal = 5;
 	private const int FieldSize = 10;
 	private const int CellDepth = 4;
-	private static readonly Vector2 ElementSize = new Vector2(2, 2);
+	private static readonly Vector2 ElementSize = new Vector2(1, 1);
 
 	[SerializeField]
 	private Transform _uiParent;

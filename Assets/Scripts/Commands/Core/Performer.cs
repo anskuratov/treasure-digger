@@ -1,4 +1,6 @@
-﻿namespace Commands.Core
+﻿using UnityEngine;
+
+namespace Commands.Core
 {
 	public class PerformerFactory
 	{
@@ -16,8 +18,15 @@
 				ICommand command = _commandPool.GetCommand<T>();
 				(command as Command<T>)?.Initialize(commandData);
 
-				command.Execute();
-				command.PostExecute();
+				if (command.Check())
+				{
+					command.Execute();
+					command.PostExecute();
+				}
+				else
+				{
+					Debug.LogError("Command invocation was interrupted while Checking");
+				}
 			}
 		}
 

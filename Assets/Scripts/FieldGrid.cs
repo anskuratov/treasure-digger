@@ -24,8 +24,8 @@ public class FieldGrid
 		{
 			for (int j = 0; j < _fieldSize; ++j)
 			{
-				var position = new Vector2(_elementSize.x * (j - _fieldSize / 2),
-					_elementSize.y * (_fieldSize / 2 - i));
+				var position = new Vector2(_elementSize.x * (j - _fieldSize / 2) + 0.5f,
+					_elementSize.y * (_fieldSize / 2 - i) - 0.5f);
 				_grid.Add(i * _fieldSize + j, position);
 			}
 		}

@@ -15,6 +15,11 @@ namespace Commands
 			_storables = storables;
 		}
 
+		public override bool Check()
+		{
+			return true;
+		}
+
 		public override void Execute()
 		{
 		}

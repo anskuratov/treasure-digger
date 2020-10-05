@@ -10,6 +10,7 @@
 			_data = data;
 		}
 
+		public abstract bool Check();
 		public abstract void Execute();
 		public abstract void PostExecute();
 	}

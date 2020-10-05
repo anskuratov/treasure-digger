@@ -1,4 +1,5 @@
-﻿using Commands;
+﻿using System;
+using Commands;
 using Commands.Core;
 using Controller;
 using Model;
@@ -9,8 +10,7 @@ using UnityEngine.EventSystems;
 namespace Behaviour
 {
 	public class CellView : ViewBehaviour<CellView.Data>,
-		IMessageListener<CellChanged>,
-		IPointerUpHandler
+		IMessageListener<CellChanged>
 	{
 		public readonly struct Data
 		{
@@ -33,7 +33,7 @@ namespace Behaviour
 
 		protected override void Refresh()
 		{
-			_cellSprite.color = Color.white - (Color.white / _controller.CellDepth) * (_controller.CellLevel - 1);
+			_cellSprite.color = Color.white - (Color.white / _controller.CellDepth) * (_controller.CellLevel);
 		}
 
 		public override void Initialize(Data data)
@@ -56,7 +56,7 @@ namespace Behaviour
 			Refresh();
 		}
 
-		public void OnPointerUp(PointerEventData eventData)
+		private void OnMouseUp()
 		{
 			_performer.Invoke(new Dig(_controller));
 		}

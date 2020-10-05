@@ -22,6 +22,15 @@ namespace Commands
 			_goldBarsSpawnerController = goldBarsSpawnerController;
 		}
 
+		public override bool Check()
+		{
+			var result = _shovelController != null;
+			result &= _goldWalletController != null;
+			result &= _cellControllers.Count > 0;
+			result &= _goldBarsSpawnerController != null;
+			return result;
+		}
+
 		public override void Execute()
 		{
 			_shovelController.Load();

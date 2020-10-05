@@ -22,6 +22,14 @@ namespace Controller
 		public int CellLevel => _cell.Level;
 		public int CellDepth => _cell.Depth;
 
+		public void UpLevel()
+		{
+			if (CellLevel < CellDepth)
+			{
+				_cell.Level += 1;
+			}
+		}
+
 		public void Save()
 		{
 			PlayerPrefs.SetInt(StoreKey, _cell.Level);

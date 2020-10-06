@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Behaviour;
 using Commands;
 using Commands.Core;
@@ -67,11 +68,12 @@ public class MainComposition : MonoBehaviour
 		var performerFactory = new PerformerFactory();
 		_performer = performerFactory.Create(commandPool);
 
-		commandPool.Register<LoadGame>(new LoadGameCommand(_shovelController, _goldWalletController, _cellControllers,
-			_goldBarsSpawnerController, _gameProcessController));
+		commandPool.Register<LoadGame>(new LoadGameCommand(storageManager, _cellControllers.Values.ToList(),
+			_shovelController, _goldWalletController, _goldBarsSpawnerController, _gameProcessController));
 		commandPool.Register<Dig>(new DigCommand(_performer, _shovelController, storageManager));
 		commandPool.Register<SpawnGoldBar>(new SpawnGoldBarCommand(_goldBarsSpawnerController, storageManager));
-		commandPool.Register<CollectGold>(new CollectGoldCommand(_goldWalletController, storageManager));
+		commandPool.Register<CollectGold>(new CollectGoldCommand(_goldWalletController, _goldBarsSpawnerController,
+			storageManager));
 		commandPool.Register<EndGame>(new EndGameCommand(_gameProcessController, storageManager));
 		commandPool.Register<RestartGame>(new RestartGameCommand(_shovelController, _goldWalletController,
 			_cellControllers, _goldBarsSpawnerController, _gameProcessController, storageManager));

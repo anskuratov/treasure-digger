@@ -20,7 +20,7 @@ namespace Controller
 			_model = model;
 		}
 
-		public void AddGoldBar(int positionIndex) => _model.AddGoldBar(new GoldBarModel(positionIndex));
+		public void AddGoldBar(GoldBarModel goldBar) => _model.AddGoldBar(goldBar);
 		public void RemoveGoldBar(GoldBarModel goldBar) => _model.RemoveGoldBar(goldBar);
 
 		public void Reset()

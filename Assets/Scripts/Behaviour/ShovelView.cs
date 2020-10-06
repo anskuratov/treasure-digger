@@ -46,5 +46,10 @@ namespace Behaviour
 		{
 			Refresh();
 		}
+
+		private void OnDestroy()
+		{
+			_controller.Listenable.RemoveListener(this);
+		}
 	}
 }

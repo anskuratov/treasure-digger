@@ -1,4 +1,5 @@
-﻿using Commands;
+﻿using System;
+using Commands;
 using Commands.Core;
 using Controller;
 using Model;
@@ -61,6 +62,11 @@ namespace Behaviour
 		public void OnMessage(GoldWalletChanged message)
 		{
 			Refresh();
+		}
+
+		private void OnDestroy()
+		{
+			_controller.Listenable.RemoveListener(this);
 		}
 	}
 }

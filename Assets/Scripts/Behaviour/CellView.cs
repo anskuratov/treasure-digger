@@ -1,4 +1,5 @@
-﻿using Commands;
+﻿using System;
+using Commands;
 using Commands.Core;
 using Controller;
 using Model;
@@ -57,6 +58,11 @@ namespace Behaviour
 		private void OnMouseUp()
 		{
 			_performer.Invoke(new Dig(_controller));
+		}
+
+		private void OnDestroy()
+		{
+			_controller.Listenable.RemoveListener(this);
 		}
 	}
 }

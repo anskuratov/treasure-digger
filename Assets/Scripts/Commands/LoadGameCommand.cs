@@ -6,47 +6,45 @@ namespace Commands
 {
 	public class LoadGameCommand : Command<LoadGame>
 	{
-		private readonly ShovelController _shovelController;
-		private readonly GoldWalletController _goldWalletController;
-		private readonly IReadOnlyDictionary<int, CellController> _cellControllers;
-		private readonly GoldBarsSpawnerController _goldBarsSpawnerController;
-		private readonly GameProcessController _gameProcessController;
+		private readonly StorageManager _storageManager;
+		private readonly List<IStorable> _storables;
 
-		public LoadGameCommand(ShovelController shovelController,
-			GoldWalletController goldWalletController,
-			IReadOnlyDictionary<int, CellController> cellControllers,
-			GoldBarsSpawnerController goldBarsSpawnerController,
-			GameProcessController gameProcessController)
+		public LoadGameCommand(StorageManager storageManager,
+			IReadOnlyList<IStorable> listStorables,
+			params IStorable[] otherStorables)
 		{
-			_shovelController = shovelController;
-			_goldWalletController = goldWalletController;
-			_cellControllers = cellControllers;
-			_goldBarsSpawnerController = goldBarsSpawnerController;
-			_gameProcessController = gameProcessController;
+			_storageManager = storageManager;
+
+			_storables = new List<IStorable>();
+
+			foreach (IStorable storable in listStorables)
+			{
+				_storables.Add(storable);
+			}
+
+			foreach (IStorable storable in otherStorables)
+			{
+				_storables.Add(storable);
+			}
 		}
 
 		public override bool Check()
 		{
-			var result = _shovelController != null;
-			result &= _goldWalletController != null;
-			result &= _cellControllers.Count > 0;
-			result &= _goldBarsSpawnerController != null;
-			result &= _gameProcessController != null;
+			var result = true;
+			foreach (IStorable storable in _storables)
+			{
+				result &= storable != null;
+			}
+
 			return result;
 		}
 
 		public override void Execute()
 		{
-			_shovelController.Load();
-			_goldWalletController.Load();
-
-			foreach (var cell in _cellControllers)
+			foreach (IStorable storable in _storables)
 			{
-				cell.Value.Load();
+				_storageManager.Load(storable);
 			}
-
-			_goldBarsSpawnerController.Load();
-			_gameProcessController.Load();
 		}
 
 		public override void PostExecute()

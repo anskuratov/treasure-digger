@@ -7,7 +7,7 @@ namespace Controller
 	public class GameProcessController : IStorable
 	{
 		private const string StoreKey = "GameProcess";
-		
+
 		private readonly GameProcessModel _model;
 
 		public IListenable Listenable => _model;

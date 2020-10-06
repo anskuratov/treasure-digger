@@ -1,4 +1,5 @@
-﻿using Commands;
+﻿using System;
+using Commands;
 using Commands.Core;
 using Controller;
 using Model;
@@ -45,14 +46,8 @@ namespace Behaviour
 			_controller = data.GameProcessController;
 			SubscribeToModel();
 
-			_endRestartGameButton.onClick.AddListener(() =>
-			{
-				data.Performer.Invoke(new RestartGame());
-			});
-			_restartGameButton.onClick.AddListener(() =>
-			{
-				data.Performer.Invoke(new RestartGame());
-			});
+			_endRestartGameButton.onClick.AddListener(() => { data.Performer.Invoke(new RestartGame()); });
+			_restartGameButton.onClick.AddListener(() => { data.Performer.Invoke(new RestartGame()); });
 
 			Refresh();
 		}
@@ -65,6 +60,11 @@ namespace Behaviour
 		public void OnMessage(GameProcessChanged message)
 		{
 			Refresh();
+		}
+
+		private void OnDestroy()
+		{
+			_controller.Listenable.RemoveListener(this);
 		}
 	}
 }

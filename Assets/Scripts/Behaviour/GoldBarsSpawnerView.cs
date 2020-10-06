@@ -21,7 +21,10 @@ namespace Behaviour
 			public readonly int FieldSize;
 			public readonly Vector2 ElementSize;
 
-			public Data(IPerformer performer, GoldBarsSpawnerController goldBarsSpawnerController, int fieldSize, Vector2 elementSize)
+			public Data(IPerformer performer,
+				GoldBarsSpawnerController goldBarsSpawnerController,
+				int fieldSize,
+				Vector2 elementSize)
 			{
 				Performer = performer;
 				GoldBarsSpawnerController = goldBarsSpawnerController;
@@ -92,27 +95,12 @@ namespace Behaviour
 
 		public void OnMessage(GoldBarFound message)
 		{
-			CreateGoldBarView(new GoldBarModel(message.GoldBarModel));
+			CreateGoldBarView(message.GoldBarModel);
 		}
 
 		public void OnMessage(GoldBarCollected message)
 		{
 			MoveViewBackToPool(message.GoldBarModel);
-			_controller.RemoveGoldBar(message.GoldBarModel);
-		}
-
-		private void MoveViewBackToPool(GoldBarModel goldBarModel)
-		{
-			var goldBarView = _goldBars[goldBarModel];
-			goldBarView.gameObject.SetActive(false);
-			_goldBars.Remove(goldBarModel);
-
-			_goldBarsPool.Add(goldBarView);
-		}
-
-		private void OnDestroy()
-		{
-			_controller.Listenable.RemoveListener<GoldBarFound>(this);
 		}
 
 		public void OnMessage(GoldBarsRemoved message)
@@ -122,6 +110,23 @@ namespace Behaviour
 				GoldBarModel goldBarModel = _goldBars.First().Key;
 				MoveViewBackToPool(goldBarModel);
 			}
+		}
+
+		private void MoveViewBackToPool(GoldBarModel goldBarModel)
+		{
+			var goldBarView = _goldBars[goldBarModel];
+			goldBarView.gameObject.SetActive(false);
+			_goldBars.Remove(goldBarModel);
+
+			_goldBarsPool.Add(goldBarView);
+
+			_controller.RemoveGoldBar(goldBarModel);
+		}
+
+		private void OnDestroy()
+		{
+			_controller.Listenable.RemoveListener<GoldBarFound>(this);
+			_controller.Listenable.RemoveListener<GoldBarsRemoved>(this);
 		}
 	}
 }

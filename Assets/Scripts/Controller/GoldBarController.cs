@@ -8,6 +8,7 @@ namespace Controller
 		private readonly GoldBarModel _model;
 
 		public IListenable Listenable => _model;
+		public int PositionIndex => _model.PositionIndex;
 
 		public GoldBarController(GoldBarModel model)
 		{

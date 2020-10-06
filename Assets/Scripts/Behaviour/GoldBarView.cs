@@ -1,23 +1,26 @@
-﻿using Controller;
-using Model;
-using Model.Messages;
+﻿using System.Collections;
+using Controller;
+using UnityEngine;
 
 namespace Behaviour
 {
-	public class GoldBarView : ViewBehaviour<GoldBarView.Data>,
-		IMessageListener<GoldBarCollected>
+	public class GoldBarView : ViewBehaviour<GoldBarView.Data>
 	{
 		public readonly struct Data
 		{
 			public readonly GoldBarController GoldBarController;
+			public readonly Vector2 InitialPosition;
 
-			public Data(GoldBarController goldBarController)
+			public Data(GoldBarController goldBarController, Vector2 initialPosition)
 			{
 				GoldBarController = goldBarController;
+				InitialPosition = initialPosition;
 			}
 		}
 
 		private GoldBarController _controller;
+		private Vector2 _initialPosition;
+		private bool _isDragging;
 
 		protected override void Refresh()
 		{
@@ -26,19 +29,33 @@ namespace Behaviour
 		public override void Initialize(Data data)
 		{
 			_controller = data.GoldBarController;
-			SubscribeToModel();
+			_initialPosition = data.InitialPosition;
 
 			Refresh();
 		}
 
-		private void SubscribeToModel()
+		public void OnMouseDown()
 		{
-			_controller.Listenable.AddListener(this);
+			_isDragging = true;
+			StartCoroutine(DraggingCoroutine());
 		}
 
-		public void OnMessage(GoldBarCollected message)
+		public void OnMouseUp()
 		{
-			_controller.Collect();
+			_isDragging = false;
+		}
+
+		private IEnumerator DraggingCoroutine()
+		{
+			while (_isDragging)
+			{
+				Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+				transform.localPosition = mousePosition;
+
+				yield return null;
+			}
+
+			transform.localPosition = _initialPosition;
 		}
 	}
 }

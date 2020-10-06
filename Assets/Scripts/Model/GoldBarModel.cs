@@ -12,7 +12,7 @@ namespace Model
 				if (_isCollected != value)
 				{
 					_isCollected = value;
-					Dispatch(new GoldBarCollected());
+					Dispatch(new GoldBarCollected(this));
 				}
 			}
 		}

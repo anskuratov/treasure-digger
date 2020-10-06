@@ -41,6 +41,8 @@ namespace Behaviour
 			_fieldGrid = new FieldGrid(data.FieldSize, data.ElementSize);
 
 			CreateCells();
+
+			transform.localPosition += new Vector3(0f, 0f, 1f);
 		}
 
 		private void CreateCells()

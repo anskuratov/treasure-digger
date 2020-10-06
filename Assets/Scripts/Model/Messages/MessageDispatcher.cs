@@ -23,6 +23,11 @@ namespace Model.Messages
 			_listeners[typeof(T)].Add(listener);
 		}
 
+		public void RemoveListener<T>(IMessageListener<T> listener) where T : struct
+		{
+			_listeners[typeof(T)].Remove(listener);
+		}
+
 		public void Dispatch<T>(T message)
 			where T : struct
 		{

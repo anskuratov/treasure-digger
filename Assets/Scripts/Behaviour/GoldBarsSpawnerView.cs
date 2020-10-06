@@ -77,10 +77,13 @@ namespace Behaviour
 				goldBarView = Instantiate(Resources.Load<GoldBarView>(PrefabPath.GoldBarView), transform);
 			}
 
-			goldBarView.Initialize(new GoldBarView.Data(goldBarController));
+			var initialPosition = _fieldGrid.Grid[goldBarModel.PositionIndex];
 			goldBarView.gameObject.SetActive(true);
-			goldBarView.transform.localPosition = _fieldGrid.Grid[goldBarModel.PositionIndex];
+			goldBarView.transform.localPosition = initialPosition;
+			goldBarView.Initialize(new GoldBarView.Data(goldBarController, initialPosition));
 			_goldBars.Add(goldBarModel, goldBarView);
+
+			goldBarController.Listenable.AddListener<GoldBarCollected>(this);
 		}
 
 		public void OnMessage(GoldBarFound message)
@@ -92,6 +95,7 @@ namespace Behaviour
 		{
 			MoveViewBackToPool(message.GoldBarModel);
 			_controller.RemoveGoldBar(message.GoldBarModel);
+			message.GoldBarModel.RemoveListener<GoldBarCollected>(this);
 		}
 
 		private void MoveViewBackToPool(GoldBarModel goldBarModel)
@@ -100,6 +104,11 @@ namespace Behaviour
 			_goldBars.Remove(goldBarModel);
 
 			_goldBarsPool.Add(goldBarView);
+		}
+
+		private void OnDestroy()
+		{
+			_controller.Listenable.RemoveListener<GoldBarFound>(this);
 		}
 	}
 }

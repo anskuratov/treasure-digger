@@ -12,7 +12,7 @@ namespace Model
 			set
 			{
 				_amount = value;
-				Dispatch(new GoldChanged(_amount));
+				Dispatch(new GoldWalletChanged(_amount));
 			}
 		}
 

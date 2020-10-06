@@ -29,6 +29,11 @@ namespace Controller
 			}
 		}
 
+		public void Reset()
+		{
+			_cell.Level = 0;
+		}
+
 		public void Save()
 		{
 			PlayerPrefs.SetInt(StoreKey, _cell.Level);

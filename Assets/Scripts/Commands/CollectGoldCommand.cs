@@ -16,6 +16,7 @@ namespace Commands
 		{
 			base.Execute();
 			_goldWalletController.CollectGold();
+			_data.GoldBarController.Collect();
 		}
 	}
 }

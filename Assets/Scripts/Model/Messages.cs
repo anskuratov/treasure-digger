@@ -1,4 +1,6 @@
-﻿namespace Model
+﻿using System.Collections.Generic;
+
+namespace Model
 {
 	public readonly struct ShovelChanged
 	{
@@ -10,11 +12,11 @@
 		}
 	}
 
-	public readonly struct GoldChanged
+	public readonly struct GoldWalletChanged
 	{
 		public readonly int Amount;
 
-		public GoldChanged(int amount)
+		public GoldWalletChanged(int amount)
 		{
 			Amount = amount;
 		}
@@ -48,5 +50,13 @@
 		{
 			GoldBarModel = goldBarModel;
 		}
+	}
+
+	public readonly struct GameProcessChanged
+	{
+	}
+
+	public readonly struct GoldBarsRemoved
+	{
 	}
 }

@@ -9,7 +9,7 @@ using UnityEngine;
 
 public class MainComposition : MonoBehaviour
 {
-	private const int ShovelsAmount = 50;
+	private const int ShovelsAmount = 200;
 	private const int GoldGoal = 5;
 	private const int FieldSize = 10;
 	private const int CellDepth = 4;
@@ -18,11 +18,13 @@ public class MainComposition : MonoBehaviour
 	[SerializeField]
 	private Transform _uiParent;
 
+	private IPerformer _performer;
+
 	private ShovelController _shovelController;
 	private GoldWalletController _goldWalletController;
 	private readonly Dictionary<int, CellController> _cellControllers = new Dictionary<int, CellController>();
 	private GoldBarsSpawnerController _goldBarsSpawnerController;
-	private IPerformer _performer;
+	private GameProcessController _gameProcessController;
 
 	private void Awake()
 	{
@@ -33,8 +35,7 @@ public class MainComposition : MonoBehaviour
 	private void Start()
 	{
 		CreateObjects();
-		PlayerPrefs.DeleteAll();
-		// _performer.Invoke(new LoadGame());
+		_performer.Invoke(new LoadGame());
 	}
 
 	private void InitializeModelsAndControllers()
@@ -53,6 +54,9 @@ public class MainComposition : MonoBehaviour
 
 		var goldBarsSpawnerModel = new GoldBarsSpawnerModel();
 		_goldBarsSpawnerController = new GoldBarsSpawnerController(goldBarsSpawnerModel);
+
+		var gameProcessModel = new GameProcessModel();
+		_gameProcessController = new GameProcessController(gameProcessModel);
 	}
 
 	private void BindingCommands()
@@ -64,10 +68,13 @@ public class MainComposition : MonoBehaviour
 		_performer = performerFactory.Create(commandPool);
 
 		commandPool.Register<LoadGame>(new LoadGameCommand(_shovelController, _goldWalletController, _cellControllers,
-			_goldBarsSpawnerController));
+			_goldBarsSpawnerController, _gameProcessController));
 		commandPool.Register<Dig>(new DigCommand(_performer, _shovelController, storageManager));
 		commandPool.Register<SpawnGoldBar>(new SpawnGoldBarCommand(_goldBarsSpawnerController, storageManager));
 		commandPool.Register<CollectGold>(new CollectGoldCommand(_goldWalletController, storageManager));
+		commandPool.Register<EndGame>(new EndGameCommand(_gameProcessController, storageManager));
+		commandPool.Register<RestartGame>(new RestartGameCommand(_shovelController, _goldWalletController,
+			_cellControllers, _goldBarsSpawnerController, _gameProcessController, storageManager));
 	}
 
 	private void CreateObjects()
@@ -76,12 +83,18 @@ public class MainComposition : MonoBehaviour
 		shovelView.Initialize(new ShovelView.Data(_shovelController));
 
 		var goldWalletView = Instantiate(Resources.Load<GoldWalletView>(PrefabPath.GoldWalletView), _uiParent);
-		goldWalletView.Initialize(new GoldWalletView.Data(_goldWalletController));
+		goldWalletView.Initialize(new GoldWalletView.Data(_performer, _goldWalletController));
 
 		var fieldView = Instantiate(Resources.Load<FieldView>(PrefabPath.FieldView), null);
 		fieldView.Initialize(new FieldView.Data(_performer, _cellControllers, FieldSize, ElementSize));
 
 		var goldBarSpawner = Instantiate(Resources.Load<GoldBarsSpawnerView>(PrefabPath.GoldBarsSpawnerView), null);
-		goldBarSpawner.Initialize(new GoldBarsSpawnerView.Data(_goldBarsSpawnerController, FieldSize, ElementSize));
+		goldBarSpawner.Initialize(new GoldBarsSpawnerView.Data(_performer, _goldBarsSpawnerController, FieldSize,
+			ElementSize));
+
+		Instantiate(Resources.Load<BagView>(PrefabPath.BagView), null);
+
+		var gameProcessView = Instantiate(Resources.Load<GameProcessView>(PrefabPath.GameProcessView), _uiParent);
+		gameProcessView.Initialize(new GameProcessView.Data(_performer, _gameProcessController));
 	}
 }

@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using Commands.Core;
 using Controller;
 
 namespace Commands
 {
-	public class LoadGameCommand : Command<LoadGame>
+	public class RestartGameCommand : SaveCommand<RestartGame>
 	{
 		private readonly ShovelController _shovelController;
 		private readonly GoldWalletController _goldWalletController;
@@ -12,11 +11,17 @@ namespace Commands
 		private readonly GoldBarsSpawnerController _goldBarsSpawnerController;
 		private readonly GameProcessController _gameProcessController;
 
-		public LoadGameCommand(ShovelController shovelController,
+		public RestartGameCommand(ShovelController shovelController,
 			GoldWalletController goldWalletController,
 			IReadOnlyDictionary<int, CellController> cellControllers,
 			GoldBarsSpawnerController goldBarsSpawnerController,
-			GameProcessController gameProcessController)
+			GameProcessController gameProcessController,
+			StorageManager storageManager) :
+			base(storageManager,
+				shovelController,
+				goldWalletController,
+				goldBarsSpawnerController,
+				gameProcessController)
 		{
 			_shovelController = shovelController;
 			_goldWalletController = goldWalletController;
@@ -25,32 +30,30 @@ namespace Commands
 			_gameProcessController = gameProcessController;
 		}
 
-		public override bool Check()
-		{
-			var result = _shovelController != null;
-			result &= _goldWalletController != null;
-			result &= _cellControllers.Count > 0;
-			result &= _goldBarsSpawnerController != null;
-			result &= _gameProcessController != null;
-			return result;
-		}
-
 		public override void Execute()
 		{
-			_shovelController.Load();
-			_goldWalletController.Load();
+			base.Execute();
 
-			foreach (var cell in _cellControllers)
+			_shovelController.Reset();
+			_goldWalletController.Reset();
+
+			foreach (var cellController in _cellControllers.Values)
 			{
-				cell.Value.Load();
+				cellController.Reset();
 			}
 
-			_goldBarsSpawnerController.Load();
-			_gameProcessController.Load();
+			_goldBarsSpawnerController.Reset();
+			_gameProcessController.Reset();
 		}
 
 		public override void PostExecute()
 		{
+			base.PostExecute();
+
+			foreach (CellController cellController in _cellControllers.Values)
+			{
+				cellController.Save();
+			}
 		}
 	}
 }

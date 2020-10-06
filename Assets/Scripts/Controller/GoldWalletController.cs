@@ -1,6 +1,7 @@
 ﻿using Model;
 using Model.Messages;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 namespace Controller
 {
@@ -23,6 +24,11 @@ namespace Controller
 		public void CollectGold()
 		{
 			_model.Amount += 1;
+		}
+
+		public void Reset()
+		{
+			_model.Amount = 0;
 		}
 
 		public void Save()

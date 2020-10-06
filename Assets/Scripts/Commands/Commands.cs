@@ -6,6 +6,10 @@ namespace Commands
 	{
 	}
 
+	public readonly struct RestartGame
+	{
+	}
+
 	public readonly struct Dig
 	{
 		public readonly CellController CellController;
@@ -18,6 +22,12 @@ namespace Commands
 
 	public readonly struct CollectGold
 	{
+		public readonly GoldBarController GoldBarController;
+
+		public CollectGold(GoldBarController goldBarController)
+		{
+			GoldBarController = goldBarController;
+		}
 	}
 
 	public readonly struct SpawnGoldBar
@@ -28,5 +38,9 @@ namespace Commands
 		{
 			PositionIndex = positionIndex;
 		}
+	}
+
+	public readonly struct EndGame
+	{
 	}
 }

@@ -12,10 +12,12 @@ namespace Controller
 		public IListenable Listenable => _shovel;
 
 		private readonly ShovelModel _shovel;
+		private readonly int _initialAmount;
 
 		public ShovelController(ShovelModel shovel)
 		{
 			_shovel = shovel;
+			_initialAmount = _shovel.Amount;
 		}
 
 		public int ShovelAmount => _shovel.Amount;
@@ -28,6 +30,11 @@ namespace Controller
 			}
 
 			_shovel.Amount -= 1;
+		}
+
+		public void Reset()
+		{
+			_shovel.Amount = _initialAmount;
 		}
 
 		public void Save()

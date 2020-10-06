@@ -32,5 +32,11 @@ namespace Model
 				_goldBars.Remove(goldBar);
 			}
 		}
+
+		public void RemoveAllGoldBars()
+		{
+			_goldBars.Clear();
+			Dispatch(new GoldBarsRemoved());
+		}
 	}
 }

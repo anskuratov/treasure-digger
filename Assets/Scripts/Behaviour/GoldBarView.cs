@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using Commands;
+using Commands.Core;
 using Controller;
 using UnityEngine;
 
@@ -8,16 +10,21 @@ namespace Behaviour
 	{
 		public readonly struct Data
 		{
+			public readonly IPerformer Performer;
 			public readonly GoldBarController GoldBarController;
 			public readonly Vector2 InitialPosition;
 
-			public Data(GoldBarController goldBarController, Vector2 initialPosition)
+			public Data(IPerformer performer, GoldBarController goldBarController, Vector2 initialPosition)
 			{
+				Performer = performer;
 				GoldBarController = goldBarController;
 				InitialPosition = initialPosition;
 			}
 		}
 
+		public bool IsInBag { get; set; }
+
+		private IPerformer _performer;
 		private GoldBarController _controller;
 		private Vector2 _initialPosition;
 		private bool _isDragging;
@@ -28,8 +35,11 @@ namespace Behaviour
 
 		public override void Initialize(Data data)
 		{
+			_performer = data.Performer;
 			_controller = data.GoldBarController;
 			_initialPosition = data.InitialPosition;
+
+			IsInBag = false;
 
 			Refresh();
 		}
@@ -55,7 +65,14 @@ namespace Behaviour
 				yield return null;
 			}
 
-			transform.localPosition = _initialPosition;
+			if (IsInBag)
+			{
+				_performer.Invoke(new CollectGold(_controller));
+			}
+			else
+			{
+				transform.localPosition = _initialPosition;
+			}
 		}
 	}
 }

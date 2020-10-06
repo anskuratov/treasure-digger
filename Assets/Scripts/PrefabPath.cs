@@ -8,5 +8,7 @@
 		public static readonly string GoldBarView = "Prefabs/GoldBarView";
 		public static readonly string FieldView = "Prefabs/FieldView";
 		public static readonly string GoldBarsSpawnerView = "Prefabs/GoldBarsSpawnerView";
+		public static readonly string BagView = "Prefabs/BagView";
+		public static readonly string GameProcessView = "Prefabs/GameProcessView";
 	}
 }

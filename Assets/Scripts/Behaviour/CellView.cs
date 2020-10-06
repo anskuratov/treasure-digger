@@ -1,11 +1,9 @@
-﻿using System;
-using Commands;
+﻿using Commands;
 using Commands.Core;
 using Controller;
 using Model;
 using Model.Messages;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace Behaviour
 {

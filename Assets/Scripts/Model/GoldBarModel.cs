@@ -6,7 +6,6 @@ namespace Model
 	{
 		public bool IsCollected
 		{
-			get => _isCollected;
 			set
 			{
 				if (_isCollected != value)

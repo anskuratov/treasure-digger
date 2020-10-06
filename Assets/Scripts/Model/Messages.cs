@@ -42,11 +42,11 @@
 
 	public readonly struct GoldBarFound
 	{
-		public readonly GoldBarModel GoldBar;
+		public readonly GoldBarModel GoldBarModel;
 
-		public GoldBarFound(GoldBarModel goldBar)
+		public GoldBarFound(GoldBarModel goldBarModel)
 		{
-			GoldBar = goldBar;
+			GoldBarModel = goldBarModel;
 		}
 	}
 }

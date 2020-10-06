@@ -79,12 +79,13 @@ namespace Behaviour
 
 			goldBarView.Initialize(new GoldBarView.Data(goldBarController));
 			goldBarView.gameObject.SetActive(true);
+			goldBarView.transform.localPosition = _fieldGrid.Grid[goldBarModel.PositionIndex];
 			_goldBars.Add(goldBarModel, goldBarView);
 		}
 
 		public void OnMessage(GoldBarFound message)
 		{
-			CreateGoldBarView(new GoldBarModel(message.GoldBar));
+			CreateGoldBarView(new GoldBarModel(message.GoldBarModel));
 		}
 
 		public void OnMessage(GoldBarCollected message)
